@@ -1,6 +1,7 @@
 package com.coolweather.android;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,10 +33,6 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class ChooseAreaFragment extends Fragment {
-
-
-
-
 
         /**
          * 宏定义试图的不同级别
@@ -88,6 +85,12 @@ public class ChooseAreaFragment extends Fragment {
                     } else if (currentLevel == LEVEL_CITY) {
                         selectedCity = cityList.get(position);
                         queryCounties();
+                    }else if(currentLevel==LEVEL_COUNTY){
+                        String weatherId = countyList.get(position).getWeatherId();
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weather_id",weatherId);    // 向intent传入WeatherId
+                        startActivity(intent);
+                        getActivity().finish();
                     }
                 }
             });
@@ -103,6 +106,7 @@ public class ChooseAreaFragment extends Fragment {
             });
             queryProvinces();   // 加载省级数据
         }
+
         /**
          * 查询全国所有的省，优先从数据库中查，如果没有查询到再到服务器上查
          */
